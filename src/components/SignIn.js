@@ -9,7 +9,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
+import { validationForm } from "./js/Validation";
+import Axios from "axios";
 
 const useStyles = makeStyles(theme => ({
 paper: {
@@ -31,8 +33,9 @@ submit: {
 }
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
 const classes = useStyles();
+const API = process.env.REACT_APP_API_LIVE
 
 return (
     <Container component="main" maxWidth="xs">
@@ -45,21 +48,35 @@ return (
         Sign in
         </Typography>
 
-        <Formik>
-        {({
+        <Formik
+            initialValues={{
+                email: "",
+                password: ""
+            }}
+            validate={validationForm}
+            onSubmit={(values, { setSubmitting }) => {
+                Axios.post(`${API}/user`, values).then(response => {
+                if (response.status === 201) {
+                    localStorage.setItem("user", JSON.stringify(values));
+                    props.history.push("/");
+                }
+                });
+                // localStorage.setItem("user", JSON.stringify(values))
+                // props.history.push("/signin")
+            }}
+            >
+                {({
             values,
-            errors,
-            touched,
             handleChange,
             handleBlur,
             handleSubmit,
             isSubmitting
-            /* and other goodies */
         }) => (
-            <form className={classes.form} onSubmit={handleSubmit}>
-            <p style={{ color: "red" }}>
-                {errors.email && touched.email && errors.email}
-            </p>
+            <form 
+            className={classes.form} 
+            noValidate
+            onSubmit={handleSubmit}
+            >
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -75,8 +92,13 @@ return (
                 autoComplete="email"
                 autoFocus
             />
-            <p style={{ color: "red" }}>
-                {errors.password && touched.password && errors.password}
+            <p
+                style={{
+                color: "red",
+                fontStyle: "italic"
+                }}
+            >
+                <ErrorMessage name="email" />
             </p>
             <TextField
                 variant="outlined"
@@ -92,6 +114,14 @@ return (
                 value={values.password}
                 autoComplete="current-password"
             />
+            <p
+                style={{
+                color: "red",
+                fontStyle: "italic"
+                }}
+            >
+                <ErrorMessage name="password" />
+            </p>
             <Button
                 type="submit"
                 fullWidth
@@ -103,7 +133,7 @@ return (
             </Button>
             <Grid container>
                 <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                 </Link>
                 </Grid>
