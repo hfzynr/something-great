@@ -89,7 +89,6 @@ return (
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
-                autoComplete="email"
                 autoFocus
             />
             <p
@@ -112,7 +111,6 @@ return (
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
-                autoComplete="current-password"
             />
             <p
                 style={{

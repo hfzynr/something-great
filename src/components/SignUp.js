@@ -81,7 +81,6 @@ return (
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                 <TextField
-                    autoComplete="fname"
                     name="firstName"
                     variant="outlined"
                     required
@@ -110,7 +109,6 @@ return (
                     id="lastName"
                     label="Last Name"
                     name="lastName"
-                    autoComplete="lname"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     defaultValue={values.lastName}
@@ -132,7 +130,6 @@ return (
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     defaultValue={values.email}
@@ -156,7 +153,6 @@ return (
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="current-password"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     defaultValue={values.password}

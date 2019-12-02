@@ -21,7 +21,8 @@ const handleClose = () => {
 return (
     <div>
         <Router />
-    <Button 
+    <Button
+    variant="outlined"
     aria-controls="simple-menu" 
     aria-haspopup="true" 
     onClick={handleClick}>
