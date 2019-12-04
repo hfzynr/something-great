@@ -3,12 +3,20 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {
-    BrowserRouter as Router,
     Link
 } from "react-router-dom";
+import swal from 'sweetalert'
 
 export default function SimpleMenu() {
 const [anchorEl, setAnchorEl] = React.useState(null);
+
+const logOut = () => {
+    localStorage.removeItem("isLogin");
+    swal({
+        title: 'Anda Sukses Log Out',
+        icon: 'success'
+    })
+};
 
 const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -20,7 +28,6 @@ const handleClose = () => {
 
 return (
     <div>
-        <Router />
     <Button
     variant="outlined"
     aria-controls="simple-menu" 
@@ -36,9 +43,10 @@ return (
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
-        <MenuItem onClick={handleClose}component={Link} to ="/">Home</MenuItem>
-        <MenuItem onClick={handleClose}component={Link} to ="/signup">Sign Up</MenuItem>
-        <MenuItem onClick={handleClose}component={Link} to ="/signin">Sign In</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to ="/home">Home</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to ="/mongodb">Mongo DB</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to ="/mongoose">Mongoose DB</MenuItem>
+        <MenuItem component={Link} to ="/" onClick={logOut} >log out</MenuItem>
     </Menu>
     </div>
 );

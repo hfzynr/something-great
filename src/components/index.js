@@ -1,3 +1,7 @@
 export { default as SignIn } from './SignIn'
 export { default as SignUp } from './SignUp'
 export { default as GuestHeader } from './guest/Header'
+export { default as Dashboard } from './member/Dashboard'
+export { default as Header } from './Header'
+export { default as Home } from './member/Home'
+export { default as MongoDB } from './member/MongoDB'

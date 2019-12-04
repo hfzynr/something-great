@@ -10,8 +10,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Formik, ErrorMessage } from "formik";
-import { validationForm } from "./js/Validation";
+import { validationForm } from "./js/SignInValidation.js";
 import Axios from "axios";
+import { withRouter } from "react-router-dom";
+import swal from 'sweetalert'
 
 const useStyles = makeStyles(theme => ({
 paper: {
@@ -33,10 +35,9 @@ submit: {
 }
 }));
 
-export default function SignIn(props) {
+function SignIn(props) {
 const classes = useStyles();
 const API = process.env.REACT_APP_API_LIVE
-
 return (
     <Container component="main" maxWidth="xs">
     <CssBaseline />
@@ -54,17 +55,25 @@ return (
                 password: ""
             }}
             validate={validationForm}
-            onSubmit={(values, { setSubmitting }) => {
-                Axios.post(`${API}/user`, values).then(response => {
-                if (response.status === 201) {
-                    localStorage.setItem("user", JSON.stringify(values));
-                    props.history.push("/");
-                }
-                });
-                // localStorage.setItem("user", JSON.stringify(values))
-                // props.history.push("/signin")
+            onSubmit={values => {
+                Axios
+                    .post(`${API}/user/login`, values)
+                    .then(response => {
+                        if (response.status === 200) {
+                            localStorage.setItem(
+                                "user",
+                                JSON.stringify(response.data.data)
+                            );
+                            localStorage.setItem("isLogin", true);
+                            props.history.push("/home");
+                            swal({
+                                title: 'Anda Sukses Log In',
+                                icon: 'success'
+                            })
+                        }
+                    });
             }}
-            >
+        >
                 {({
             values,
             handleChange,
@@ -143,3 +152,5 @@ return (
     </Container>
 );
 }
+
+export default withRouter(SignIn);
