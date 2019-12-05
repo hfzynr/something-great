@@ -1,19 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios'
 import { Formik } from "formik";
 import swal from 'sweetalert2'
-
-const useStyles = makeStyles(theme => ({
-root: {
-    padding: theme.spacing(3, 2),
-},
-
-}));
+import { verify , axios } from '../../helpers'
 
 const swalWithBootstrapButtons = swal.mixin({
     customClass: {
@@ -33,9 +25,8 @@ export default class TodoMongoose extends React.Component {
     }
 
     showTodo = () => {
-        const user = JSON.parse(localStorage.getItem("user"))
-        axios
-            .get(`https://api-live-mongodb-mongoose-adi.herokuapp.com/todos/email/${user.email}`)
+        axios()
+            .get(`/todo/email/${verify().email}`)
             .then(response => {
                 this.setState({ data: response.data.data});
             })
@@ -49,19 +40,14 @@ export default class TodoMongoose extends React.Component {
     }
 
     addOne = values => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        console.log(user._id);
-        
-
-        axios
-            .post(`https://api-live-mongodb-mongoose-adi.herokuapp.com/todos/`, {
+        axios()
+            .post(`todo/`, {
                 ...values,
-                email : user.email,
-                status : true,
-                user : user._id
+                name : verify().firstName,
+                email : verify().email
             })
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     swal.fire(
                         'Added!',
                         'Your todo has been added.',
@@ -83,8 +69,8 @@ export default class TodoMongoose extends React.Component {
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                axios
-                    .delete(`https://api-live-mongodb-mongoose-adi.herokuapp.com/todos/${id}`)
+                axios()
+                    .delete(`todo/${id}`)
                     .then(response => {
                         if (response.status === 200) {
                             swalWithBootstrapButtons.fire(
@@ -102,7 +88,7 @@ export default class TodoMongoose extends React.Component {
             ) {
             swalWithBootstrapButtons.fire(
                 'Cancelled',
-                'Your imaginary file is safe :)',
+                'Not Deleted !',
                 'error'
             )
             }
@@ -110,8 +96,6 @@ export default class TodoMongoose extends React.Component {
     }
 
     updateOne = id => {
-        console.log(id);
-        
         swal.mixin({
             input: 'text',
             confirmButtonText: 'Next &rarr;',
@@ -127,8 +111,8 @@ export default class TodoMongoose extends React.Component {
             const answer = result.value
             const data = answer.toString()
             
-            axios
-                    .put(`https://api-live-mongodb-mongoose-adi.herokuapp.com/todos/${id}`, {todo : data})
+            axios()
+                    .put(`todo/${id}`, {todo : data})
                     .then(response => {
                         if (response.status === 200) {
                             
@@ -174,7 +158,6 @@ export default class TodoMongoose extends React.Component {
                     <form style={{textAlign:"center", marginTop:"50px"}} onSubmit={handleSubmit} autoComplete="off">
                         <TextField 
                             id="todo"
-                            fullName="todo"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             defaultValue={values.todo} 
@@ -186,7 +169,7 @@ export default class TodoMongoose extends React.Component {
                 </Formik>
                 {this.state.data.length > 0 && this.state.data.map(({name, todo, _id}, key) => {
                     return (
-                        <Paper key={key} style={{width: "40%", margin:"0 auto", marginTop: "50px"}} classfullName={useStyles.root}>
+                        <Paper key={key} style={{width: "40%", margin:"0 auto", marginTop: "50px"}} >
                             <div style={{padding:"25px"}}>
                                 <Typography variant="h5" component="h3">
                                     {name}
