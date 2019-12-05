@@ -48,7 +48,7 @@ return (
         <MenuItem onClick={handleClose} component={Link} to ="/mongoose">Mongoose DB</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to ="/mysql">MySql DB</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to ="/sequelize">Sequelize</MenuItem>
-        <MenuItem component={Link} to ="/" onClick={logOut} >log out</MenuItem>
+        <MenuItem component={Link} to ="/" onClick={logOut} >Log out</MenuItem>
     </Menu>
     </div>
 );
