@@ -11,9 +11,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Formik, ErrorMessage } from "formik";
 import { validationForm } from "./js/SignInValidation.js";
-import Axios from "axios";
 import { withRouter } from "react-router-dom";
 import swal from 'sweetalert'
+import { axios } from '../helpers'
 
 const useStyles = makeStyles(theme => ({
 paper: {
@@ -37,7 +37,6 @@ submit: {
 
 function SignIn(props) {
 const classes = useStyles();
-const API = process.env.REACT_APP_API_LIVE
 return (
     <Container component="main" maxWidth="xs">
     <CssBaseline />
@@ -56,8 +55,8 @@ return (
             }}
             validate={validationForm}
             onSubmit={values => {
-                Axios
-                    .post(`${API}/user/login`, values)
+                axios()
+                    .post(`/user/login`, values)
                     .then(response => {
                         console.log(response.data);
                         

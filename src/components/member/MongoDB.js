@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -12,9 +11,7 @@ import Swal from "sweetalert2";
 import { Formik, ErrorMessage } from "formik";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { verify } from '../../helpers'
-
-const API = process.env.REACT_APP_API_LIVE;
+import { verify , axios } from '../../helpers'
 
 export default class Todo extends Component {
     constructor(props) {
@@ -29,10 +26,11 @@ export default class Todo extends Component {
 
     fetch = () => {
 
-        axios
-            .get(`${API}/todo/email/${verify().email}`)
+        axios()
+            .get(`/todo/email/${verify().email}`)
             .then(response => {
-                this.setState({ todos: response.data.token });
+                console.log(response)
+                this.setState({ todos: response.data.data });
             })
             .catch(error => {
                 console.log(error);
@@ -44,8 +42,8 @@ export default class Todo extends Component {
     };
 
     deleteOne = id => {
-        axios
-            .delete(`${API}/todo/${id}`)
+        axios()
+            .delete(`/todo/${id}`)
             .then(response => {
                 if (response.status === 200) {
                     Swal.fire(
@@ -61,8 +59,8 @@ export default class Todo extends Component {
     };
 
     addOne = values => {
-        axios
-            .post(`${API}/todo`, {
+        axios()
+            .post(`/todo`, {
                 ...values,
                 name: verify().firstName,
                 email: verify().email
@@ -79,14 +77,15 @@ export default class Todo extends Component {
         this.setState({ id: id})
         this.setState({ edit: true });
 
-        axios.get(`${API}/todo/${id}`).then(response => {
+        axios()
+        .get(`/todo/${id}`).then(response => {
             this.setState({ todo: response.data.data.todo });
         });
     };
 
     updateOne = values => {
-        axios
-            .put(`${API}/todo/${this.state.id}`, {
+        axios()
+            .put(`/todo/${this.state.id}`, {
                 ...values
             })
             .then(response => {
@@ -98,6 +97,7 @@ export default class Todo extends Component {
     };
 
     render() {
+        console.log(this.state.todos)
         return (
             <Grid 
             container spacing={1}
@@ -193,23 +193,21 @@ export default class Todo extends Component {
                                             type="submit"
                                             variant="contained"
                                             color="primary"
-                                            style={{ marginRight:6}}>
-                                            <EditIcon
-                                                onClick={() => {
-                                                    this.editOne(item._id);
-                                                }}
-                                            />
+                                            style={{ marginRight:6}}
+                                            onClick={() => {
+                                                this.editOne(item._id);
+                                            }}>
+                                            <EditIcon/>
                                             </Button>
 
                                             <Button 
                                             type="submit"
                                             variant="contained"
-                                            color="primary">
-                                            <DeleteIcon
-                                                onClick={() =>
-                                                    this.deleteOne(item._id)
-                                                }
-                                            />
+                                            color="primary"
+                                            onClick={() =>
+                                                this.deleteOne(item._id)
+                                            }>
+                                            <DeleteIcon/>
                                             </Button>
 
                                         </ListItem>
