@@ -5,7 +5,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import { SignIn,SignUp,Header,Home,MongoDB } from './components'
+import { SignIn,SignUp,Header,Home,MongoDB,MongooseB } from './components'
 
 function App() {
   return (
@@ -24,6 +24,9 @@ function App() {
         </Route>
         <Route path="/mongodb">
             <MongoDB />
+        </Route>
+        <Route path="/mongoose">
+            <MongooseB />
         </Route>
     </Switch>
   </Router>

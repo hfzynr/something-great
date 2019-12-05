@@ -59,12 +59,13 @@ return (
                 Axios
                     .post(`${API}/user/login`, values)
                     .then(response => {
+                        console.log(response.data);
+                        
                         if (response.status === 200) {
                             localStorage.setItem(
-                                "user",
-                                JSON.stringify(response.data.data)
+                                "token",
+                                JSON.stringify(response.data.token)
                             );
-                            localStorage.setItem("isLogin", true);
                             props.history.push("/home");
                             swal({
                                 title: 'Anda Sukses Log In',

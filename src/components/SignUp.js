@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Axios from "axios";
 import { withRouter } from "react-router-dom"
+import swal from 'sweetalert'
 
 const useStyles = makeStyles(theme => ({
 paper: {
@@ -58,8 +59,12 @@ return (
             onSubmit={(values, { setSubmitting }) => {
                 Axios.post(`${API}/user`, values).then(response => {
                 if (response.status === 201) {
-                    localStorage.setItem("user", JSON.stringify(values));
+                    localStorage.setItem("user", JSON.stringify([values.firstName , values.lastName, values.email]));
                     props.history.push("/signin");
+                    swal({
+                        title: 'Anda Sukses Sign Up',
+                        icon: 'success'
+                    })
                 }
                 });
                 // localStorage.setItem("user", JSON.stringify(values))

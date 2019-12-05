@@ -11,7 +11,7 @@ export default function SimpleMenu() {
 const [anchorEl, setAnchorEl] = React.useState(null);
 
 const logOut = () => {
-    localStorage.removeItem("isLogin");
+    localStorage.removeItem("token");
     swal({
         title: 'Anda Sukses Log Out',
         icon: 'success'
@@ -46,6 +46,8 @@ return (
         <MenuItem onClick={handleClose} component={Link} to ="/home">Home</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to ="/mongodb">Mongo DB</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to ="/mongoose">Mongoose DB</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to ="/mysql">MySql DB</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to ="/sequelize">Sequelize</MenuItem>
         <MenuItem component={Link} to ="/" onClick={logOut} >log out</MenuItem>
     </Menu>
     </div>

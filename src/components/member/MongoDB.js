@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { Formik, ErrorMessage } from "formik";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { verify } from '../../helpers'
 
 const API = process.env.REACT_APP_API_LIVE;
 
@@ -27,12 +28,11 @@ export default class Todo extends Component {
     }
 
     fetch = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
 
         axios
-            .get(`${API}/todo/email/${user.email}`)
+            .get(`${API}/todo/email/${verify().email}`)
             .then(response => {
-                this.setState({ todos: response.data.data });
+                this.setState({ todos: response.data.token });
             })
             .catch(error => {
                 console.log(error);
@@ -61,12 +61,11 @@ export default class Todo extends Component {
     };
 
     addOne = values => {
-        const user = JSON.parse(localStorage.getItem("user"));
         axios
             .post(`${API}/todo`, {
                 ...values,
-                name: user.firstName,
-                email: user.email
+                name: verify().firstName,
+                email: verify().email
             })
             .then(response => {
                 if (response.status === 201) {
